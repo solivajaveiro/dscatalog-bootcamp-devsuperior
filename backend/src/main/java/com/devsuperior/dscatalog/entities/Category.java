@@ -10,11 +10,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -38,6 +41,9 @@ public class Category implements Serializable {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
+    @ManyToMany(mappedBy = "categories")
+    private Set<Product> product = new HashSet<>();
+
     public Instant getCreatedAt() {
         return createdAt;
     }
@@ -54,5 +60,9 @@ public class Category implements Serializable {
     @PreUpdate
     public void preUpdate() {
         updatedAt = Instant.now();
+    }
+
+    public Set<Product> getProduct() {
+        return product;
     }
 }
